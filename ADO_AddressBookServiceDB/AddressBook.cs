@@ -78,5 +78,64 @@ namespace ADO_AddressBookServiceDB
             }
             return result;
         }
+        public int UpdateExistingContactBasedonName()
+        {
+            SqlConnection con = new SqlConnection("data source=DESKTOP-MC3EMTI; initial catalog=AddressBookServiceDB; integrated security=true");
+            //Open Connection
+            con.Open();
+            string query = "Update AddressBookTable set Address = 'Pune' where FirstName = 'Karan'";
+            //Pass query to TSql
+            SqlCommand sqlCommand = new SqlCommand(query, con);
+            int result = sqlCommand.ExecuteNonQuery();
+            if (result != 0)
+            {
+                Console.WriteLine("Updated Contact");
+            }
+            else
+            {
+                Console.WriteLine("Not Updated");
+            }
+
+            //Close Connection
+            con.Close();
+            return result;
+        }
+        public int DeleteContactBasedonName()
+        {
+            SqlConnection con = new SqlConnection("data source=DESKTOP-MC3EMTI; initial catalog=AddressBookServiceDB; integrated security=true");
+            //Open Connection
+            con.Open();
+            string query = "delete from AddressBookTable where FirstName = 'Karan' and LastName = 'Sharma'";
+            SqlCommand sqlCommand = new SqlCommand(query, con);
+            int result = sqlCommand.ExecuteNonQuery();
+            if (result != 0)
+            {
+                Console.WriteLine("Updated Contact");
+            }
+            else
+            {
+                Console.WriteLine("Not Updated");
+            }
+
+            //Close Connection
+            con.Close();
+            return result;
+        }
+
+        //For retrieving data we use SQLDataReader
+        public void Display(SqlDataReader sqlDataReader)
+        {
+            AddressBookTable obj = new AddressBookTable();
+            obj.FirstName = Convert.ToString(sqlDataReader["FirstName"]);
+            obj.LastName = Convert.ToString(sqlDataReader["LastName"]);
+            obj.Address = Convert.ToString(sqlDataReader["Address"] + " " + sqlDataReader["City"] + " " + sqlDataReader["State"] + " " + sqlDataReader["zip"]);
+            obj.PhoneNumber = Convert.ToInt64(sqlDataReader["PhoneNumber"]);
+            obj.Email = Convert.ToString(sqlDataReader["email"]);
+            obj.AddressBookName = Convert.ToString(sqlDataReader["AddressBookName"]);
+            obj.Type = Convert.ToString(sqlDataReader["TypeOfAddressBook"]);
+            Console.WriteLine("{0} || {1} || {2} || {3} || {4} || {5} || {6}", obj.FirstName, obj.LastName, obj.Address, obj.PhoneNumber, obj.Email, obj.AddressBookName, obj.Type);
+
+        }
     }
 }
+    
